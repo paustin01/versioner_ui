@@ -8,7 +8,7 @@ node_modules/
 dist/
 
 # Local env testing
-env.development.local
+.env.development.local
 
 # Compiled Java class files
 *.class
