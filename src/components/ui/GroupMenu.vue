@@ -14,8 +14,8 @@
                     <v-btn v-if="grplen > 0"
                     v-on:click="$emit('grpmodal', $event)" >Manage Groups</v-btn> 
 
-                    <v-btn v-if="grplen > 0 && grpname != ''"
-                    v-on:click="$emit('updategroup', $event)" >Update {{grpname}}</v-btn> 
+                    <!-- <v-btn v-if="grplen > 0 && grpname != ''"
+                    v-on:click="$emit('updategroup', $event)" >Update {{grpname}}</v-btn>  -->
 
               <br />
 

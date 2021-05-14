@@ -24,6 +24,7 @@
           { text: 'Status', value:'STATE' },
           { text: 'Release Tag', value: 'JIRA_RELEASE', sortable: true, },
           { text: 'Deployed By', value: 'DEPLOYER' },
+          { text: 'Deployed From', value: 'CALLER' },
           { text: 'Deployed On', value: 'CREATED' }
           
         ],
@@ -63,13 +64,14 @@
       :items="tdata"
       :search="search">
       <template v-slot:items="props">
-        <td>{{ props.item.id }}</td>
+        
         <td class="">{{ props.item.ENVIRONMENT }}</td>
         <td class="">{{ props.item.PRODUCT }}</td>
         <td class="" >{{ props.item.PRODUCT_VERSION }}</td> 
         <td class="" >{{ props.item.STATE }}</td> 
         <td class="" >{{ props.item.JIRA_RELEASE }}</td> 
         <td class="">{{ props.item.DEPLOYER }}</td>
+        <td>{{ props.item.CALLER }}</td>
         <td class="">{{ formatDate(new Date(props.item.CREATED)) }}</td>
       </template>
       <template v-slot:no-results>

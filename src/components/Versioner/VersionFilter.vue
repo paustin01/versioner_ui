@@ -283,7 +283,7 @@ export default {
 
             this.data.filter( d => {
                 if(exectMatch(d.JIRA_RELEASE, tag)){
-                    products.push(d.product);
+                    products.push(d.PRODUCT);
                 }
                 return ( exectMatch(d.JIRA_RELEASE, tag)  ); 
             });

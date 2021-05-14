@@ -56,9 +56,8 @@
         
       
         <ReleaseTagDropDown :items="rel_tags" label="Filter By Release" @onsearchbyreltag="onSearchByRelTag" />
-
-<div class="mt-3" ></div>
-<strong>Product Tag List:</strong>
+        <div class="mt-3" ></div>
+        <strong>Product Tag List:</strong>
          <p>
               <v-btn v-on:click="$emit('selectallproducts', $event)">Select All</v-btn> 
               <v-btn v-on:click="$emit('selectnoproducts', $event)">Select None</v-btn> 
