@@ -1,0 +1,55 @@
+image: burstbucker/bitslackdeck:latest
+
+definitions:
+  steps:
+    - step: &deploy
+        name: Build and push to ECR
+        trigger: automatic
+        script:
+          - sed -e "s/REPLACE_VUE_APP_API_KEY/$ACCT_VERSIONER_API_KEY/" 
+            -e "s/REPLACE_VUE_APP_API_URI/$ACCT_VERSIONER_API_URI/" .env > .env.local
+          - $(AWS_ACCESS_KEY_ID=$ACCT_AWS_ACCESS_KEY
+            AWS_SECRET_ACCESS_KEY=$ACCT_AWS_SECRET_KEY
+            aws ecr get-login --no-include-email --region us-west-2)
+          - docker build
+            --tag $PRODUCTION_ECR_REGISTRY/$BITBUCKET_REPO_SLUG:$BITBUCKET_BUILD_NUMBER
+            --build-arg GIT_USERNAME="$ACCT_BITBUCKET_USER"
+            --build-arg GIT_PASSWORD="$ACCT_BITBUCKET_PASSWORD"
+            --no-cache .
+          - docker push
+            $PRODUCTION_ECR_REGISTRY/$BITBUCKET_REPO_SLUG:$BITBUCKET_BUILD_NUMBER
+          - git tag ${BITBUCKET_BUILD_NUMBER}
+          - git push origin --tags
+        services:
+          - docker
+        after-script:
+          # Set Slack & Rundeck defaults for this project here
+          - export SLACK_CHANNEL=ci_devops
+          - export RUNDECK_JOB_ID=d0cabf69-19e9-461e-9b3e-5db9c0ee11a0
+          - export QUERY_STRING_PARAMS=opt.build_num=$BITBUCKET_BUILD_NUMBER\&opt.slack_channel=$SLACK_CHANNEL
+          - export PROJECT=ProductionDeployments
+          # Then we run the script with the variables above
+          - python /pipelines_notifier.py
+                --build-number "$BITBUCKET_BUILD_NUMBER"
+                --repo_name "$BITBUCKET_REPO_SLUG"
+                --rundeck-url "$ACCT_RUNDECK_BASE_URL/project/$PROJECT/job/show/$RUNDECK_JOB_ID?$QUERY_STRING_PARAMS"
+                --slack-channel "$SLACK_CHANNEL"
+                --committer "$(git log -1 --pretty=format:'%an' | xargs)"
+                --commit-msg "$(git log -1 --pretty=format:'%B' | xargs)"
+                --build-status "$BITBUCKET_EXIT_CODE"
+                --slack-webhook "$ACCT_SLACK_WEBHOOK"
+                --team-name "$BITBUCKET_WORKSPACE"
+
+pipelines:
+  branches:
+    develop:
+      - step: *deploy
+    master:
+      - step:
+          name: Autostep to avoid BB errors
+          trigger: automatic
+          script:
+            - echo "Stubbing for manual build"
+      - step:
+          <<: *deploy
+          trigger: manual
