@@ -5,6 +5,15 @@
 npm install
 ```
 
+## Env Vars Setup
+```
+# copy the example 
+cp ./.env.example ./.env.development.local
+
+# update the api key value
+vim ./.env.development.local
+```
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
