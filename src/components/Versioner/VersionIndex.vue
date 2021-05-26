@@ -6,6 +6,7 @@ import VersionTable from './VersionTable.vue';
 import VersionFilter from './VersionFilter.vue';
 import Modal from '../ui/Modal.vue';
 import ArrayHelpers from '../../utils/array_helpers.js';
+import vueInternetChecker from 'vue-internet-checker';
 
 export default{
 
@@ -15,12 +16,13 @@ export default{
         Modal,
         Loader,
         VersionTable,
-        VersionFilter,       
+        VersionFilter,
+        vueInternetChecker,     
     },
 
     data(){
         return {
-
+            onLine: true,
             previous_deploy_modal:false,
             previous_selected_product:"",
             previous_versions:[],
@@ -37,11 +39,27 @@ export default{
     created(){
         this.latest_versions_load();
         this.moveTab(this.getTab());
+        this.onLine = window.navigator.onLine;
+
     },
 
     methods:{
-        latest_versions_load(){
 
+        status(ele) {
+                console.log(ele);
+                this.onLine = ele;
+        },
+        event(ele) {
+                console.log(ele);
+                console.log(ele.type)
+                if (ele.type === 'online'){
+                    this.refreshTable();
+                }
+                
+        },
+
+        latest_versions_load(){
+            this.error_msg = null;
             Api.latest_versions().then(res => {
                 if (res.ok){return res.json();}
             }).then(data => {
@@ -51,7 +69,8 @@ export default{
                 this.distinct_products = [...new Set(this.latest_versions.result.map(v=>v.PRODUCT))].sort();
 
             }).catch(e => {
-                this.error_msg = "Shitters Full.." + e;
+                console.log(e)
+                this.error_msg = e;
             });
 
             return true;
@@ -62,7 +81,7 @@ export default{
 
             this.previous_deploy_modal = true;
             this.previous_selected_product = false;
-
+            this.error_msg = null;
             Api.previous_versions_for_product(product, 20).then(res => {
                 if (res.ok){return res.json();}
             }).then(data => {
@@ -80,9 +99,8 @@ export default{
 
                 this.previous_selected_product = product;
                             
-
             }).catch(e => {
-                this.error_msg = "Shitters Full.." + e;
+                this.error_msg =  e;
             });
 
             return true;
@@ -137,9 +155,12 @@ export default{
 
 <template>
 <div data-app>
-
+    <vue-internet-checker @status="status" @event="event" />
+    
+    <v-alert type="warning" v-if="error_msg"> {{error_msg}} <v-btn @click="refreshTable" small>Refresh App</v-btn>  </v-alert>
+    <v-alert type="warning" v-if="!onLine"> No Internet Connection </v-alert>
     <v-tabs v-model="active_tab" slider-color="#D9A43A" ripple >
-
+    
       <v-tab v-for="(tab, idx) in tab_labels" :key="idx" v-on:click="setTab(idx)">{{ tab }}</v-tab>
       
         <v-tab-item active-class='active-class'>

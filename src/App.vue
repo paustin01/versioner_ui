@@ -14,13 +14,24 @@ export default {
     Nav,
     Article,
     Footer,
-  }
+  },
+
+  data(){
+    return {
+    }
+  },
+
+  methods: {
+      
+    }
+
 }
 </script>
 
 <template>
   <v-app id="app">
     <Header />
+    
     <div id="main">
       <Article>
           <router-view></router-view>
