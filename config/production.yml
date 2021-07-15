@@ -1,16 +1,17 @@
 # base vars
 env: production
 region: us-west-2
-deploy_bucket: production-clear-lake-sls-deploy
+deploy_bucket: clear-lake-artifacts-${self:custom.vars.env}
 
 # app settings:
 app_name: "versionator-ui"
 app_bucket: "${self:custom.vars.env}-clear-lake-${self:custom.vars.app_name}"
 app_log_bucket: "${self:custom.vars.env}-clear-lake-${self:custom.vars.app_name}-logs"
 app_domain_alias: "versionator.data-prod.clearcollateral.com"
-app_cert: "{{resolve:ssm:/ss/prod/acm/us-east-1/ss-prod.clearcollateral.com:1}}"
-app_acl: "arn:aws:wafv2:us-east-1:722407567653:global/webacl/StackSet-CC-WAF-IP-608573d9-0d79-4fc6-a8de-7c4dbc80f78e-us-east-1-WAF/6358c5e4-1231-42c6-b0bd-3a7bfece96d3"
+app_cert: "arn:aws:acm:us-east-1:736018059497:certificate/de297d65-afd1-49cb-a05a-c96721250f00"
+app_acl: "arn:aws:wafv2:us-east-1:736018059497:global/webacl/StackSet-CC-WAF-IP-917d2e91-930b-449a-ae2d-1e28bd57a29f-us-east-1-WAF/90d14a4c-38cb-4c57-87fa-db4e99ae827f"
 
 # ssm derived
 app_hosted_zone: '{{resolve:ssm:/data/prod/route53/hosted_zone/data-prod.clearcollateral.com:1}}'
+
 
