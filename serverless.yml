@@ -1,12 +1,17 @@
 # Happy Coding!
-service: clearlake-versionator
+service: clear-lake-versionator
 frameworkVersion: '2'
 
 custom:
   stage: ${opt:stage, 'development'}
-  vars: ${file(./config/${self:custom.stage}.yml)} 
-  s3Bucket: ${file(./config/${self:custom.stage}.yml):app_bucket}
-  s3LocalPath: build/
+  vars: ${file(./config/${self:custom.stage}.yml)}
+  s3Sync:
+    - bucketName: ${file(./config/${self:custom.stage}.yml):app_bucket}
+      localDir: dist/
+  cloudfrontInvalidate:
+    - distributionIdKey: 'CDNDistributionId' #reference to stack output
+      items:
+        - '/index.html'
 
 provider:
   name: aws
@@ -18,7 +23,8 @@ provider:
 
 plugins:
   - serverless-single-page-app-plugin
-  #- serverless-cloudfront-invalidate
+  - serverless-s3-sync
+  - serverless-cloudfront-invalidate
 
 resources:
   Resources:
@@ -38,12 +44,12 @@ resources:
           DestinationBucketName: !Ref S3AppLogBucket
           LogFilePrefix: '${self:custom.vars.app_name}'
         Tags:
-          - Key: "billing-env"
+          - Key: 'billing-env'
             Value: '${self:custom.vars.env}'
-          - Key: "billing-product"
+          - Key: 'billing-product'
             Value: '${self:custom.vars.app_name}'
-          - Key: "billing-type"
-            Value: "data"
+          - Key: 'billing-type'
+            Value: 'data'
     #Log Bucket
     S3AppLogBucket:
       Type: AWS::S3::Bucket
@@ -62,12 +68,12 @@ resources:
               Status: 'Enabled'
               ExpirationInDays: 90
         Tags:
-          - Key: "billing-env"
+          - Key: 'billing-env'
             Value: '${self:custom.vars.env}'
-          - Key: "billing-product"
-            Value: "devops"
-          - Key: "billing-type"
-            Value: "devops"
+          - Key: 'billing-product'
+            Value: 'devops'
+          - Key: 'billing-type'
+            Value: 'devops'
     # App Bucket Access
     S3AppBucketPolicy:
       Type: 'AWS::S3::BucketPolicy'
@@ -95,7 +101,6 @@ resources:
         DistributionConfig:
           Aliases:
             - '${self:custom.vars.app_domain_alias}'
-            #- !If [UseCustomDomain, !FindInMap [CustomDomainAlias, !Ref EnvironmentParam, "Alias"], !Ref "AWS::NoValue"]
           CustomErrorResponses:
             - ErrorCode: 403
               ResponseCode: 403
@@ -114,34 +119,34 @@ resources:
           Origins:
             - Id: ${self:custom.vars.app_bucket}
               DomainName: '${self:custom.vars.app_bucket}.s3.amazonaws.com'
-                    #!If ['InUSEastOne',
-                #!Join ['', [!Sub '${AWS::StackName}-site-bucket', '.s3.amazonaws.com']],
-                #!Join ['', [!Sub '${AWS::StackName}-site-bucket', '.s3-', !Ref 'AWS::Region', '.amazonaws.com']]]
               S3OriginConfig:
                 OriginAccessIdentity: !Sub >-
                   origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}
           ViewerCertificate:
             AcmCertificateArn: ${self:custom.vars.app_cert}
-            SslSupportMethod:  "sni-only"
-            #CloudFrontDefaultCertificate: !If [UseCustomDomain, !Ref "AWS::NoValue", true]
-          WebACLId:  ${self:custom.vars.app_acl} 
-          #!FindInMap [WebAclArn, !Ref EnvironmentParam, "Arn"]
-
+            SslSupportMethod: 'sni-only'
+          WebACLId: ${self:custom.vars.app_acl}
+    # Custom DNS record
     CustomDomainRecordSet:
       Type: AWS::Route53::RecordSetGroup
-      # Condition: UseCustomDomain
       Properties:
         HostedZoneId: ${self:custom.vars.app_hosted_zone}
         RecordSets:
           - Name: ${self:custom.vars.app_domain_alias}
-            #!Join [ '', [ !FindInMap [CustomDomainAlias, !Ref EnvironmentParam, "Alias"], '.' ] ]
             Type: A
             AliasTarget:
-              DNSName: !Join [ '', [ !GetAtt DefaultCloudfrontDistribution.DomainName, '.' ] ]
+              DNSName:
+                !Join [
+                  '',
+                  [!GetAtt DefaultCloudfrontDistribution.DomainName, '.'],
+                ]
               HostedZoneId: 'Z2FDTNDATAQYW2'
-
 
   Outputs:
     DefaultCloudfrontDistributionOutput:
       Value:
-        'Fn::GetAtt': [ DefaultCloudfrontDistribution, DomainName ]
+        'Fn::GetAtt': [DefaultCloudfrontDistribution, DomainName]
+    CDNDistributionId:
+      Description: CDN distribution id.
+      Value: !Ref DefaultCloudfrontDistribution
+
