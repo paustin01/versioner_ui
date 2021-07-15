@@ -1,0 +1,16 @@
+# base vars
+env: production
+region: us-west-2
+deploy_bucket: production-clear-lake-sls-deploy
+
+# app settings:
+app_name: "versionator-ui"
+app_bucket: "${self:custom.vars.env}-clear-lake-${self:custom.vars.app_name}"
+app_log_bucket: "${self:custom.vars.env}-clear-lake-${self:custom.vars.app_name}-logs"
+app_domain_alias: "versionator.data-prod.clearcollateral.com"
+app_cert: "{{resolve:ssm:/ss/prod/acm/us-east-1/ss-prod.clearcollateral.com:1}}"
+app_acl: "arn:aws:wafv2:us-east-1:722407567653:global/webacl/StackSet-CC-WAF-IP-608573d9-0d79-4fc6-a8de-7c4dbc80f78e-us-east-1-WAF/6358c5e4-1231-42c6-b0bd-3a7bfece96d3"
+
+# ssm derived
+app_hosted_zone: '{{resolve:ssm:/data/prod/route53/hosted_zone/data-prod.clearcollateral.com:1}}'
+
