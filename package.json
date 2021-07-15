@@ -9,6 +9,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build:development": "npm run build -- --mode development",
     "lint": "vue-cli-service lint",
     "electron:build": "vue-cli-service electron:build -mwl",
     "electron:serve": "vue-cli-service electron:serve",
@@ -19,6 +20,7 @@
   "main": "background.js",
   "dependencies": {
     "core-js": "^3.6.5",
+    "serverless-single-page-app-plugin": "^1.0.2",
     "vue": "^2.6.11",
     "vue-internet-checker": "^2.0.1",
     "vue-router": "^3.5.1",
