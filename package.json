@@ -8,7 +8,8 @@
   },
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "sh -ac 'vue-cli-service build -- --mode ${REACT_APP_ENV}'",
+    "build": "sh -ac 'vue-cli-service build --mode ${REACT_APP_ENV}'",
+    "build:mock": "sh -ac 'vue-cli-service build --mode development'",
     "build:development": "npm run build -- --mode development",
     "build:production": "npm run build -- --mode production",
     "lint": "vue-cli-service lint",
@@ -31,6 +32,7 @@
     "yarn": "^1.22.10"
   },
   "devDependencies": {
+    "@vue/cli": "^4.5.13",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
