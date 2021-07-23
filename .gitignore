@@ -10,7 +10,6 @@ dist/
 # Local env testing
 .env.development.local
 .env.local
-.env
 
 # Compiled Java class files
 *.class
