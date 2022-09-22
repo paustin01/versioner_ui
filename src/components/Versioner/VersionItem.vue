@@ -32,15 +32,15 @@ export default {
 
         <tr>
         <td v-for="(ver, idx) in envs_and_products" :key="`vers-${idx}`" :class="ver.style" :style="`width:${getWidth()}%`"> 
-            <span>{{ver.ENVIRONMENT}}<br />
-            <small v-if="ver.JIRA_RELEASE == ''" class="gray">--</small>
-            <small v-else class="gray">{{ver.JIRA_RELEASE}}</small>
+            <span>{{ver.environment}}<br />
+            <small v-if="ver.jira_release == ''" class="gray">--</small>
+            <small v-else class="gray">{{ver.jira_release}}</small>
             </span>
         </td>
         </tr>
         <tr>
         <td v-for="(ver, idx) in envs_and_products" :key="`pvers-${idx}`" :class="ver.style"> 
-            <span :title="ver.DEPLOYER" >{{ver.PRODUCT_VERSION}}</span>
+            <span :title="ver.deployer" >{{ver.product_version}}</span>
         </td>
         </tr>
 

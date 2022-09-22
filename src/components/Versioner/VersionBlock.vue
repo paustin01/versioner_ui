@@ -80,44 +80,45 @@ export default {
                 </td>
                 <td v-for="(ev,idx) in envsprods" 
                 :key="`versions-${idx}`" 
-                :data_vesion="`${ev.PRODUCT_VERSION} ${ev.JIRA_RELEASE}`"
+                :data_vesion="`${ev.product_version} ${ev.jira_release}`"
                 class="data_product_version"
-                :style="`width:${getWidth()}%  display:${getVis(ev.JIRA_RELEASE)}`"> 
+                :style="`width:${getWidth()}%  display:${getVis(ev.jira_release)}`"> 
                     
                 <v-tooltip top>
                 <template v-slot:activator="{ on }">
 
                     <span v-on="on">
                     
-                    <span v-if="ev.STATE === 'done'">
-                        {{ev.PRODUCT_VERSION}} 
+                    <span v-if="ev.in_spec === 'done'">
+                        {{ev.product_version}} 
                         <v-icon small class="green-txt">mdi-thumb-up-outline</v-icon>                       
                     </span>
                     <span v-else>
-                        <span v-if="ev.PRODUCT_VERSION == '--'">
-                            {{ev.PRODUCT_VERSION}}
+                        <span v-if="ev.product_version == '--'">
+                            {{ev.product_version}}
                         </span>
                         <span v-else>
-                            <strike>{{ev.PRODUCT_VERSION}}</strike> <v-icon small class="red-txt">mdi-thumb-down-outline</v-icon>     
+                            <strike>{{ev.product_version}}</strike> <v-icon small class="red-txt">mdi-thumb-down-outline</v-icon>     
                         </span>
                     </span>
                     
                     <small v-if="show_rel_tag" 
                     class="gray"> 
                     
-                    <em v-if="ev.JIRA_RELEASE == ''" > (--) </em> 
-                    <em v-else> ({{ev.JIRA_RELEASE}}) </em>
+                    <em v-if="ev.jira_release == ''" > (--) </em> 
+                    <em v-else> ({{ev.jira_release}}) </em>
                     
                     </small>
                     </span>
             </template>
             <v-list small>
-                <v-list-item>Version: {{ev.PRODUCT_VERSION}}</v-list-item>
-                <v-list-item>Release: {{ev.JIRA_RELEASE}}</v-list-item>
-                <v-list-item>Deployer: {{ev.DEPLOYER}}  </v-list-item>
-                <v-list-item>Created: {{ (ev.CREATED !== '--') ? new Date(ev.CREATED).toLocaleDateString('en-US') : '--'}} </v-list-item>
-                <v-list-item>Env: {{ev.ENVIRONMENT}}</v-list-item>
-                <v-list-item>State: {{ev.STATE}}</v-list-item>         
+                <v-list-item>Version: {{ev.product_version}}</v-list-item>
+                <v-list-item>Alias: {{ev.alias}}</v-list-item>
+                <v-list-item>Release: {{ev.jira_release}}</v-list-item>
+                <v-list-item>Deployer: {{ev.deployer}}  </v-list-item>
+                <v-list-item>Created: {{ (ev.created !== '--') ? new Date(ev.created).toLocaleDateString('en-US') : '--'}} </v-list-item>
+                <v-list-item>Env: {{ev.environment}}</v-list-item>
+                <v-list-item>Spec: {{ev.in_spec}}</v-list-item>         
             </v-list>
             </v-tooltip>   
                     

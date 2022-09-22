@@ -76,8 +76,8 @@ export default {
         this.relsases = [];
 
          this.data.filter( d => {
-            if(d.jira_release != '' && this.relsases.indexOf(d.JIRA_RELEASE) == -1){
-                this.relsases.push(d.JIRA_RELEASE);
+            if(d.jira_release != '' && this.relsases.indexOf(d.jira_release) == -1){
+                this.relsases.push(d.jira_release);
             }
             return false;
         });
@@ -282,10 +282,10 @@ export default {
             //let matchFunct = (this.rel_tag_exect_match) ? exectMatch : likeMatch;
 
             this.data.filter( d => {
-                if(exectMatch(d.JIRA_RELEASE, tag)){
-                    products.push(d.PRODUCT);
+                if(exectMatch(d.jira_release, tag)){
+                    products.push(d.product);
                 }
-                return ( exectMatch(d.JIRA_RELEASE, tag)  ); 
+                return ( exectMatch(d.jira_release, tag)  ); 
             });
 
             this.selectNoProducts();
@@ -321,7 +321,7 @@ export default {
             let node = ArrayHelpers.all_match(this.flag_version[index]);
             let classname = this.show_bad_tag ? 'version-success' : 'version-good version-success';
             if (settype == 'class'){ return node ? classname : 'version-bad';}
-            if (settype == 'style'){return node && this.show_bad_tag  ? ' visibility:collapse; ' : ' visibility:visible; ';}
+            if (settype == 'style'){ return node && this.show_bad_tag  ? ' visibility:collapse; ' : ' visibility:visible; ';}
             return "";
         },
 
@@ -333,12 +333,12 @@ export default {
 
             //filter by product
             let return_data = this.data.filter( d => {  
-                return (prod == d.PRODUCT 
-                        && this.selected_env.indexOf(d.ENVIRONMENT) != -1); 
+                return (prod == d.product 
+                        && this.selected_env.indexOf(d.environment) != -1); 
             });
 
             //backfill empty rows
-            return_data = this.backFillEnv(return_data, prod).sort(ArrayHelpers.dynamicSort('ENVIRONMENT'));            
+            return_data = this.backFillEnv(return_data, prod).sort(ArrayHelpers.dynamicSort('environment'));            
             this.$set(this.selected_versions, prod, return_data);
 
             //save last selection in localstore
@@ -357,8 +357,8 @@ export default {
             let all_versions  = [];
 
             arry.forEach( ( a )=>{
-                skip_backfill.push(a.ENVIRONMENT);
-                all_versions.push(a.PRODUCT_VERSION);
+                skip_backfill.push(a.environment);
+                all_versions.push(a.product_version);
                 a['style'] = 'active';  
             });
 
@@ -381,14 +381,14 @@ export default {
 
         backFillVars(env, product){
             return { "id": 0, 
-                "CREATED": '--', 
-                "ENVIRONMENT": env, 
-                "PRODUCT": product, 
-                "PRODUCT_VERSION": "--",
-                "DEPLOYER": "--", 
-                "JIRA_RELEASE": "--", 
-                "CALLER": "--",
-                "STATE": "--",
+                "created": '--', 
+                "environment": env, 
+                "product": product, 
+                "product_version": "--",
+                "deployer": "--", 
+                "jira_release": "--", 
+                "caller": "--",
+                "in_spec": "--",
                 'style':'muted',
              };
         },

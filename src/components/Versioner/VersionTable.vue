@@ -18,14 +18,15 @@
 
         headers: [
           //{ text: 'ID', align: 'left', sortable: true, value: 'ID'},
-          { text: 'Env', value: 'ENVIRONMENT' },
-          { text: 'Product', value: 'PRODUCT' },
-          { text: 'Version', value: 'PRODUCT_VERSION', sortable: true, },
-          { text: 'Status', value:'STATE' },
-          { text: 'Release Tag', value: 'JIRA_RELEASE', sortable: true, },
-          { text: 'Deployed By', value: 'DEPLOYER' },
-          { text: 'Deployed From', value: 'CALLER' },
-          { text: 'Deployed On', value: 'CREATED' }
+          { text: 'Env', value: 'environment' },
+          { text: 'Product', value: 'product' },
+          { text: 'Version', value: 'product_version', sortable: true, },
+          { text: 'Alias', value:'alias' },
+          { text: 'Spec', value:'in_spec' },
+          { text: 'Release Tag', value: 'jira_release', sortable: true, },
+          { text: 'Deployed By', value: 'deployer' },
+          { text: 'Deployed From', value: 'caller' },
+          { text: 'Deployed On', value: 'created' }
           
         ],
         tdata: this.table_data,
@@ -65,14 +66,14 @@
       :search="search">
       <template v-slot:items="props">
         
-        <td class="">{{ props.item.ENVIRONMENT }}</td>
-        <td class="">{{ props.item.PRODUCT }}</td>
-        <td class="" >{{ props.item.PRODUCT_VERSION }}</td> 
-        <td class="" >{{ props.item.STATE }}</td> 
-        <td class="" >{{ props.item.JIRA_RELEASE }}</td> 
-        <td class="">{{ props.item.DEPLOYER }}</td>
-        <td>{{ props.item.CALLER }}</td>
-        <td class="">{{ formatDate(new Date(props.item.CREATED)) }}</td>
+        <td class="">{{ props.item.environment }}</td>
+        <td class="">{{ props.item.product }}</td>
+        <td class="" >{{ props.item.product_version }}</td> 
+        <td class="" >{{ props.item.in_spec }}</td> 
+        <td class="" >{{ props.item.jira_release }}</td> 
+        <td class="">{{ props.item.deployer }}</td>
+        <td>{{ props.item.caller }}</td>
+        <td class="">{{ formatDate(new Date(props.item.created)) }}</td>
       </template>
       <template v-slot:no-results>
         <v-alert :value="true" color="error" icon="mdi-warning">

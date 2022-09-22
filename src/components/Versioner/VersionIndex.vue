@@ -65,8 +65,8 @@ export default{
             }).then(data => {
 
                 this.latest_versions = data;
-                this.distinct_envs = [...new Set(this.latest_versions.result.map(v=>v.ENVIRONMENT))];
-                this.distinct_products = [...new Set(this.latest_versions.result.map(v=>v.PRODUCT))].sort();
+                this.distinct_envs = [...new Set(this.latest_versions.result.map(v=>v.environment))];
+                this.distinct_products = [...new Set(this.latest_versions.result.map(v=>v.product))].sort();
 
             }).catch(e => {
                 console.log(e)
@@ -86,12 +86,12 @@ export default{
                 if (res.ok){return res.json();}
             }).then(data => {
                 
-                let d = data.result.sort(ArrayHelpers.dynamicSort('ENVIRONMENT'))
+                let d = data.result.sort(ArrayHelpers.dynamicSort('environment'))
                 this.previous_versions = {}; 
                 d.map((v)=>{
 
                     let obj = this.previous_versions
-                    let key = v.ENVIRONMENT
+                    let key = v.environment
                     let idx = Object.prototype.hasOwnProperty.call(obj, key);
                     if(!idx){ this.previous_versions[key] = [] }
                     this.previous_versions[key].push(v)
@@ -200,23 +200,25 @@ export default{
                                 <thead> 
                                 <tr>
                                     <th>Env</th>
+                                    <th>Alias</th>
                                     <th>Product</th>
                                     <th>Version</th>
                                     <th>Release</th>
                                     <th>Deployer</th>
-                                    <th>Status</th>
+                                    <th>Spec</th>
                                     <th>Created</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="(v, k) in pv" :key="k">
-                                    <td width="10%"> {{v.ENVIRONMENT}} </td>
-                                    <td width="30%"> {{v.PRODUCT}} </td>
-                                    <td width="10%"> {{v.PRODUCT_VERSION}} </td>
-                                    <td width="15%"> {{v.JIRA_RELEASE}} </td>
-                                    <td width="15%"> {{v.DEPLOYER}} </td>
-                                    <td width="10%"> {{v.STATE}} </td>
-                                    <td width="10%"> {{new Date(v.CREATED).toLocaleDateString('en-US')}} </td>
+                                    <td width="10%"> {{v.environment}} </td>
+                                    <td width="10%"> {{v.alias}} </td>
+                                    <td width="20%"> {{v.product}} </td>
+                                    <td width="10%"> {{v.product_version}} </td>
+                                    <td width="15%"> {{v.jira_release}} </td>
+                                    <td width="15%"> {{v.deployer}} </td>
+                                    <td width="10%"> {{v.in_spec}} </td>
+                                    <td width="10%"> {{new Date(v.created).toLocaleDateString('en-US')}} </td>
                                 </tr>
                                 </tbody>
 

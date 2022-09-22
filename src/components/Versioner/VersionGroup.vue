@@ -29,7 +29,6 @@ export default {
             <option selected="selected" value=''>Select a group</option>
             <option v-for="(grp, idx) in groups" :key="grp.name" :value="idx">{{grp.name}}</option>
         </select>
-
         <div class="icon-warp">
         <label for="group_select"> 
             <v-icon>mdi-group</v-icon>
