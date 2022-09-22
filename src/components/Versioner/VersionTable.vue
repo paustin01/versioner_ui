@@ -1,6 +1,5 @@
 <script>
   export default {
-
     props:{
         table_data: {type: Array},
     },
@@ -27,12 +26,10 @@
           { text: 'Deployed By', value: 'deployer' },
           { text: 'Deployed From', value: 'caller' },
           { text: 'Deployed On', value: 'created' }
-          
         ],
         tdata: this.table_data,
       }
     },
-
     methods:{
       formatDate(d){
         return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
@@ -65,7 +62,6 @@
       :items="tdata"
       :search="search">
       <template v-slot:items="props">
-        
         <td class="">{{ props.item.environment }}</td>
         <td class="">{{ props.item.product }}</td>
         <td class="" >{{ props.item.product_version }}</td> 
