@@ -1,20 +1,19 @@
 {
   "service": {
-    "service": "clearlake-versionator",
+    "service": "clear-lake-versionator",
     "serviceObject": {
-      "name": "clearlake-versionator"
+      "name": "clear-lake-versionator"
     },
     "provider": {
-      "stage": "development",
-      "variableSyntax": "\\${([^{}:]+?(?:\\(|:)(?:[^:{}][^{}]*?)?)}",
       "name": "aws",
       "runtime": "nodejs12.x",
+      "stage": "development",
       "region": "us-west-2",
       "deploymentBucket": "development-clear-lake-sls-deploy",
+      "versionFunctions": true,
       "deploymentBucketObject": {
         "name": "development-clear-lake-sls-deploy"
       },
-      "versionFunctions": true,
       "compiledCloudFormationTemplate": {
         "AWSTemplateFormatVersion": "2010-09-09",
         "Description": "The AWS CloudFormation template for this Serverless application",
@@ -213,7 +212,10 @@
         },
         "Outputs": {
           "ServerlessDeploymentBucketName": {
-            "Value": "development-clear-lake-sls-deploy"
+            "Value": "development-clear-lake-sls-deploy",
+            "Export": {
+              "Name": "sls-clear-lake-versionator-development-ServerlessDeploymentBucketName"
+            }
           },
           "DefaultCloudfrontDistributionOutput": {
             "Value": {
@@ -221,6 +223,12 @@
                 "DefaultCloudfrontDistribution",
                 "DomainName"
               ]
+            }
+          },
+          "CDNDistributionId": {
+            "Description": "CDN distribution id.",
+            "Value": {
+              "Ref": "DefaultCloudfrontDistribution"
             }
           }
         }
@@ -240,11 +248,25 @@
         "app_acl": "arn:aws:wafv2:us-east-1:758725036624:global/webacl/StackSet-CC-WAF-IP-0fdde5ab-0926-42b0-b144-4ef32661d2ed-us-east-1-WAF/6ce3045d-9b02-43b0-8e84-2b261335fb92",
         "app_hosted_zone": "{{resolve:ssm:/data/dev/route53/hosted_zone/data-dev.clearcollateral.com:1}}"
       },
-      "s3Bucket": "development-clear-lake-versionator-ui",
-      "s3LocalPath": "build/"
+      "s3Sync": [
+        {
+          "bucketName": "development-clear-lake-versionator-ui",
+          "localDir": "dist/"
+        }
+      ],
+      "cloudfrontInvalidate": [
+        {
+          "distributionIdKey": "CDNDistributionId",
+          "items": [
+            "/*"
+          ]
+        }
+      ]
     },
     "plugins": [
-      "serverless-single-page-app-plugin"
+      "serverless-single-page-app-plugin",
+      "serverless-s3-sync",
+      "serverless-cloudfront-invalidate"
     ],
     "pluginsData": {},
     "functions": {},
@@ -450,26 +472,25 @@
               "DomainName"
             ]
           }
+        },
+        "CDNDistributionId": {
+          "Description": "CDN distribution id.",
+          "Value": {
+            "Ref": "DefaultCloudfrontDistribution"
+          }
         }
       }
     },
     "configValidationMode": "warn",
     "serviceFilename": "serverless.yml",
-    "layers": {},
     "initialServerlessConfig": {
-      "service": "clearlake-versionator",
-      "frameworkVersion": "2",
+      "service": "clear-lake-versionator",
+      "frameworkVersion": "3",
       "custom": {
         "$ref": "$[\"service\"][\"custom\"]"
       },
       "provider": {
-        "name": "aws",
-        "runtime": "nodejs12.x",
-        "stage": "development",
-        "region": "us-west-2",
-        "deploymentBucket": {
-          "name": "development-clear-lake-sls-deploy"
-        }
+        "$ref": "$[\"service\"][\"provider\"]"
       },
       "plugins": {
         "$ref": "$[\"service\"][\"plugins\"]"
@@ -478,10 +499,11 @@
         "$ref": "$[\"service\"][\"resources\"]"
       }
     },
+    "layers": {},
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/clearlake-versionator/development/1625276159768-2021-07-03T01:35:59.768Z",
+    "artifactDirectoryName": "serverless/clear-lake-versionator/development/1663867521108-2022-09-22T17:25:21.108Z",
     "artifact": ""
   }
 }

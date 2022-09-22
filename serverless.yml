@@ -11,7 +11,7 @@ custom:
   cloudfrontInvalidate:
     - distributionIdKey: 'CDNDistributionId' #reference to stack output
       items:
-        - '/index.html'
+        - '/*'
 
 provider:
   name: aws
