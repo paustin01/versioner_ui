@@ -1,6 +1,6 @@
 # Happy Coding!
 service: clear-lake-versionator
-frameworkVersion: '2'
+frameworkVersion: '3'
 
 custom:
   stage: ${opt:stage, 'development'}
@@ -11,7 +11,7 @@ custom:
   cloudfrontInvalidate:
     - distributionIdKey: 'CDNDistributionId' #reference to stack output
       items:
-        - '/index.html'
+        - '/*'
 
 provider:
   name: aws

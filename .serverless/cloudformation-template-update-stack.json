@@ -196,7 +196,10 @@
   },
   "Outputs": {
     "ServerlessDeploymentBucketName": {
-      "Value": "development-clear-lake-sls-deploy"
+      "Value": "development-clear-lake-sls-deploy",
+      "Export": {
+        "Name": "sls-clear-lake-versionator-development-ServerlessDeploymentBucketName"
+      }
     },
     "DefaultCloudfrontDistributionOutput": {
       "Value": {
@@ -204,6 +207,12 @@
           "DefaultCloudfrontDistribution",
           "DomainName"
         ]
+      }
+    },
+    "CDNDistributionId": {
+      "Description": "CDN distribution id.",
+      "Value": {
+        "Ref": "DefaultCloudfrontDistribution"
       }
     }
   }
