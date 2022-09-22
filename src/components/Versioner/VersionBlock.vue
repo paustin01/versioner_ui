@@ -89,7 +89,7 @@ export default {
 
                     <span v-on="on">
                     
-                    <span v-if="ev.in_spec === 'done'">
+                    <span v-if="ev.in_spec === 'done' || ev.in_spec === 'success'">
                         {{ev.product_version}} 
                         <v-icon small class="green-txt">mdi-thumb-up-outline</v-icon>                       
                     </span>
