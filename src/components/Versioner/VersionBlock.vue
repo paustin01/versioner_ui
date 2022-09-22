@@ -98,7 +98,14 @@ export default {
                             {{ev.product_version}}
                         </span>
                         <span v-else>
-                            <strike>{{ev.product_version}}</strike> <v-icon small class="red-txt">mdi-thumb-down-outline</v-icon>     
+                            <span v-if="ev.in_spec === 'done' || ev.in_spec === 'success'">
+                                {{ev.product_version}} 
+                                <v-icon small class="green-txt">mdi-thumb-up-outline</v-icon>   
+                            </span>
+                            <span v-else>
+                                <strike>{{ev.product_version}}</strike> 
+                                <v-icon small class="red-txt">mdi-thumb-down-outline</v-icon>
+                            </span>
                         </span>
                     </span>
                     
