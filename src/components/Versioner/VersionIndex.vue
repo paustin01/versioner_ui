@@ -4,20 +4,22 @@ import {locals} from '../../utils/locals.js';
 import Loader from '../icons/Loading.vue';
 import VersionTable from './VersionTable.vue';
 import VersionFilter from './VersionFilter.vue';
-import Modal from '../ui/Modal.vue';
+//import Modal from '../ui/Modal.vue';
 import ArrayHelpers from '../../utils/array_helpers.js';
 import vueInternetChecker from 'vue-internet-checker';
+import VersionProductDetail from './VersionProductDetail';
 
 export default{
 
     name:'VersionIndex',
 
     components:{
-        Modal,
+        //Modal,
         Loader,
         VersionTable,
         VersionFilter,
-        vueInternetChecker,     
+        vueInternetChecker,
+        VersionProductDetail,  
     },
 
     data(){
@@ -82,7 +84,7 @@ export default{
             this.previous_deploy_modal = true;
             this.previous_selected_product = false;
             this.error_msg = null;
-            Api.previous_versions_for_product(product, 20).then(res => {
+            Api.previous_versions_for_product(product, 50).then(res => {
                 if (res.ok){return res.json();}
             }).then(data => {
                 
@@ -105,7 +107,6 @@ export default{
             return true;
 
         },
-
 
         refreshTable(){
             this.latest_versions = {result: []};
@@ -130,69 +131,22 @@ export default{
             this.active_tab = tab_num;
         },
 
-        goToRundeck(jobstr){
-            const url = "https://rundeck.data-dev.clearcollateral.com/execution/show";
-            const job = jobstr.replace(/[^0-9]+/g, '');
-
-            const anchor = document.createElement('a');
-            anchor.href = `${url}/${job}`;
-            anchor.target="_blank";
-            anchor.click();
-
-        },
-
-
-        goToRepo(product){
-            const url = "https://bitbucket.org/clearcapital"
-            const anchor = document.createElement('a');
-            anchor.href = `${url}/${product}`;
-            anchor.target="_blank";
-            anchor.click();
-        },
-
-        goToPipelines(product, version){
-            const url = "https://bitbucket.org/clearcapital"; 
-            const anchor = document.createElement('a');
-            anchor.href = `${url}/${product}/pipelines/results/${version}`;
-            anchor.target="_blank";
-            anchor.click();
-        },
-
-        formatCratedDate(d){
-
-            try{
-              const yymmdd = new Date(d).toISOString().slice(0, 10);
-              const hhmmss = new Date(d).toLocaleTimeString('en-US');
-              return `${yymmdd} : ${hhmmss}`;
-            }catch(e){
-                console.log(e);
-              return d;
-            } 
-
+        toFlatArray(obj){
+            const output = [];
+            for(var key in obj){
+                for(let i=0; i< obj[key].length; i++){
+                    output.push(obj[key][i]);
+                }
+            }
+            return output;
         }
-
     }
 
 }
 
 </script>
 
-<style scoped>
-    .previous-table{
-        padding: 1px;
-        border: 1px solid rgb(110, 110, 110);
-        margin:2px 2px 10px 2px;
-        border-collapse:separate !important;
-        width: 100%;
-        font-size: 80%;
-        text-align: center;
-    }
 
-    .previous-highlight{
-        color: #ffffff;
-    }
-
-</style>
 
 <template>
 <div data-app class="darkmode">    
@@ -227,75 +181,23 @@ export default{
             </div>
 
 
-            <Modal v-if="previous_deploy_modal" v-on:closemodal="previous_deploy_modal = false">
-                    <div v-if="previous_selected_product == false">
-                        <Loader />
-                    </div>
-                    <div v-else>
-                        <h3 slot="header">Previous Deploys: 
-                            <span @click="goToRepo(previous_selected_product)" class="previous-highlight cursor-pointer hover-effect">
-                                {{previous_selected_product}}
-                            </span>
-                        
-                        </h3>
+            
+            
+    <v-dialog 
+      v-if="previous_deploy_modal"
+      v-model="previous_deploy_modal"
+      fullscreen
+      overlay-color="black"
+      overlay-opacity="1"
+      style="background-color: black;"
+      transition="dialog-bottom-transition">
+            
+        <VersionProductDetail
+            v-on:closemodal="previous_deploy_modal = false" 
+            :items="toFlatArray(previous_versions)" 
+            :product_name="previous_selected_product" />
 
-                        <div v-for="(pv, key) in previous_versions" :key="key" >
-                            <table width="100%" border="1" class="previous-table">
-                                <thead> 
-                                <tr>
-                                    <th>Env</th>
-                                    <th>Alias</th>
-                                    <th>Product</th>
-                                    <th>Version</th>
-                                    <th>Release</th>
-                                    <th>Deployer</th>
-                                    <th>Spec</th>
-                                    <th>Created</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="(v, k) in pv" :key="k">
-                                    <td width="10%"> {{v.environment}} </td>
-                                    <td width="15%"> 
-                                        <span class="cursor-pointer hover-effect" @click="goToRundeck(v.alias)" v-if="v.alias.includes('rundeck_')">
-                                            {{v.alias}}
-                                        </span>
-                                        <span v-else>
-                                            {{v.alias}}
-                                        </span>
-                                        
-                                    </td>
-                                    <td width="20%"> 
-                                        <span @click="goToRepo(v.product)" class="cursor-pointer hover-effect">
-                                            {{v.product}}
-                                        </span> </td>
-                                    <td width="5%"> 
-                                        
-                                        <span @click="goToPipelines( v.product, v.product_version  )" class="cursor-pointer hover-effect">
-                                            {{v.product_version}}
-                                        </span>
-
-                                         </td>
-                                    <td width="15%"> {{v.jira_release}} </td>
-                                    <td width="15%"> {{v.deployer}} </td>
-                                    <td width="5%"> {{v.in_spec}} </td>
-                                    <td width="15%">
-                                        {{formatCratedDate(v.created)}}
-                                    </td>
-                                </tr>
-                                </tbody>
-
-                            </table>
-
-
-
-                        </div>
-
-
-                    </div>
-            </Modal>
-
-
+    </v-dialog>
         </v-tab-item>
 
     </v-tabs>

@@ -6,7 +6,7 @@
     data () {
       return {
         search: '',
-        
+         options: {
           pagination: {
                 ascending: true,
                 sortBy:"name",
@@ -14,6 +14,8 @@
                 rowsPerPage: 50,
                 page: 1
             },
+         },
+
 
         headers: [
           //{ text: 'ID', align: 'left', sortable: true, value: 'ID'},
@@ -64,7 +66,6 @@
     </v-card-title>
     <v-data-table
       class="elevation-2"
-      :items-per-page="10"
       :headers="headers"
       :items="tdata"
       :search="search">

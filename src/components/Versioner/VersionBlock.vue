@@ -93,7 +93,7 @@ export default {
     table th { text-align: left;}
     table td { padding:2px;}
     .gray{color:"#333";
-    opacity: 0.3;
+    opacity: 0.5;
     }
 </style>
 
