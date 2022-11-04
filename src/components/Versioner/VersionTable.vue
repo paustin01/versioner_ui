@@ -26,9 +26,15 @@
           { text: 'Deployed By', value: 'deployer' },
           { text: 'Deployed From', value: 'caller' },
           { text: 'Deployed On', value: 'created', formatter: (d) => {
-            const yymmdd = new Date(d).toISOString().slice(0, 10);
-            const hhmmss = new Date(d).toLocaleTimeString('en-US');
-            return `${yymmdd} : ${hhmmss}`;
+
+            try{
+              const yymmdd = new Date(d).toISOString().slice(0, 10);
+              const hhmmss = new Date(d).toLocaleTimeString('en-US');
+              return `${yymmdd} : ${hhmmss}`;
+            }catch(e){
+              return d;
+            }
+
           }
         
         }
