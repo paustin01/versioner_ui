@@ -11,7 +11,11 @@ export default {
 <template>
     <header> 
         <div class="row">
-        <div class="col" style="">
+        <div class="col" >
+            <div style="padding:10px; margin-left: 20px;">
+               <strong>Versioner</strong> 
+            </div>
+            
             <!--img class="logo" src="@/assets/clear-capital-logo.png" style="width:100%; min-width:100px; max-width:170px; margin-right:5px;" alt="Data Team" -->
         </div>
         <div class="col"></div>
