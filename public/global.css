@@ -44,13 +44,14 @@ a:hover{
 }
 
 #main > nav{
-flex: 0 0 10vw;
+/* flex: 0 0 4vw; */
+width: 0px;
+display: none;
 background-color: #121212;
-min-width: 50px;
 }
 
 #main > aside {
-flex: 0 0 20vw;
+flex: 0 0 5vw;
 background:#121212;
 display: none;
 }
@@ -62,14 +63,17 @@ order: -1;
 
 #main > nav ul{
     list-style: none;
-    margin-top: 10px;
+    margin-top: 0px;
+    padding-left: 0px;
 }
 
 #main > nav ul li a{
     display: block;
     color:"#121212";
     text-decoration: none;
-    padding:10px;
+    padding:5px;
+    font-size: 80%;
+    display: none;
 }
 
 #main > nav ul li a.active{
