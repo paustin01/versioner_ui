@@ -26,7 +26,6 @@ export default{
             previous_deploy_modal:false,
             previous_selected_product:"",
             previous_versions:[],
-
             latest_versions: {result: []},
             distinct_products:[],
             distinct_envs:[],
@@ -49,6 +48,7 @@ export default{
                 console.log(ele);
                 this.onLine = ele;
         },
+
         event(ele) {
                 console.log(ele);
                 console.log(ele.type)
@@ -183,7 +183,7 @@ export default{
 </style>
 
 <template>
-<div data-app class="darkmode">
+<div data-app class="darkmode">    
     <vue-internet-checker @status="status" @event="event" />
     
     <v-alert type="warning" v-if="error_msg"> {{error_msg}} <v-btn @click="refreshTable" small>Refresh App</v-btn>  </v-alert>
