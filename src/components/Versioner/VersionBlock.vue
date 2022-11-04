@@ -30,6 +30,29 @@ export default {
             this.$emit('triggerpreviousversions',product);
         },
 
+        goToRepo(product){
+            const url = " https://bitbucket.org/clearcapital"
+            const anchor = document.createElement('a');
+            anchor.href = `${url}/${product}`;
+            anchor.target="_blank";
+            anchor.click();
+        },
+
+        goToPipelines(product, version){
+            const url = "https://bitbucket.org/clearcapital"; 
+            const anchor = document.createElement('a');
+            anchor.href = `${url}/${product}/pipelines/results/${version}`;
+            anchor.target="_blank";
+            anchor.click();
+        },
+
+        formatCreateDate(d){
+            const yymmdd = new Date(d).toISOString().slice(0, 10);
+            const hhmmss = new Date(d).toLocaleTimeString('en-US');
+            return `${yymmdd} : ${hhmmss}`;
+        },
+
+
         closeModal(){
             this.show_deploy_modal = false;
         }
@@ -53,8 +76,8 @@ export default {
     table{ font-size:90%}
     table th { text-align: left;}
     table td { padding:2px;}
-    .gray{
-        color:rgb(142, 142, 142);
+    .gray{color:"#333";
+    opacity: 0.3;
     }
 </style>
 
@@ -64,8 +87,9 @@ export default {
         <thead>
             <tr>
                <th :style="`width:${getWidth()}%`"> Product</th>
-               <th v-for="(e,idx) in sorted_envs" :key="`env-${idx}`" :style="`width:${getWidth()}%`">{{e}}</th>     
-            <tr/>
+               <th v-for="(e,idx) in sorted_envs" :key="`env-${idx}`" :style="`width:${getWidth()}%`">{{e}}
+            </th>     
+        </tr>
         </thead>
         <tbody>
 
@@ -75,8 +99,10 @@ export default {
                 :key="index" :class="callback(index)" :style="callback(index, 'style')">
                 <td :style="`width:${getWidth()}%`">
                     <v-icon @click="getDeployList(index)" title="Display previous deploys"
-                    style="cursor:pointer;" small>mdi-format-list-bulleted</v-icon>
-                    <span @click="getDeployList(index)">{{index}}</span> 
+                    class="cursor-pointer" small>mdi-format-list-bulleted</v-icon>
+                    <span @click="getDeployList(index)"></span> 
+                    <span style="color:#1e1e1e">||</span> 
+                    <span @click="goToRepo(index)" class="cursor-pointer">{{index}}</span>  
                 </td>
                 <td v-for="(ev,idx) in envsprods" 
                 :key="`versions-${idx}`" 
@@ -87,11 +113,16 @@ export default {
                 <v-tooltip top>
                 <template v-slot:activator="{ on }">
 
-                    <span v-on="on">
-                    
                     <span v-if="ev.in_spec === 'done' || ev.in_spec === 'success'">
-                        {{ev.product_version}} 
-                        <v-icon small class="green-txt">mdi-thumb-up-outline</v-icon>                       
+                        
+                        <span class="cursor-pointer" @click="goToPipelines(index, ev.product_version)">
+                            {{ev.product_version}} 
+                        </span>
+                        
+                        <span v-on="on">
+                            <v-icon small class="green-txt">mdi-thumb-up-outline</v-icon>
+                        </span>
+
                     </span>
                     <span v-else>
                         <span v-if="ev.product_version == '--'">
@@ -99,31 +130,37 @@ export default {
                         </span>
                         <span v-else>
                             <span v-if="ev.in_spec === 'done' || ev.in_spec === 'success'">
+                                
+                                <span class="cursor-pointer" @click="goToPipelines(index, ev.product_version)">
                                 {{ev.product_version}} 
-                                <v-icon small class="green-txt">mdi-thumb-up-outline</v-icon>   
+                                </span>
+                                <span v-on="on">
+                                    <v-icon small class="green-txt">mdi-thumb-up-outline</v-icon>
+                                </span>
                             </span>
                             <span v-else>
-                                <strike>{{ev.product_version}}</strike> 
-                                <v-icon small class="red-txt">mdi-thumb-down-outline</v-icon>
+                                <span class="stricken cursor-pointer" @click="goToPipelines(index, ev.product_version)" >{{ev.product_version}} </span> 
+
+                                <span v-on="on">
+                                    <v-icon small class="red-txt">mdi-thumb-down-outline</v-icon>
+                                </span>
                             </span>
                         </span>
                     </span>
                     
-                    <small v-if="show_rel_tag" 
-                    class="gray"> 
-                    
+                    <small v-if="show_rel_tag" class="gray"> 
                     <em v-if="ev.jira_release == ''" > (--) </em> 
                     <em v-else> ({{ev.jira_release}}) </em>
                     
                     </small>
-                    </span>
+                   
             </template>
             <v-list small>
                 <v-list-item>Version: {{ev.product_version}}</v-list-item>
                 <v-list-item>Alias: {{ev.alias}}</v-list-item>
                 <v-list-item>Release: {{ev.jira_release}}</v-list-item>
                 <v-list-item>Deployer: {{ev.deployer}}  </v-list-item>
-                <v-list-item>Created: {{ (ev.created !== '--') ? new Date(ev.created).toLocaleDateString('en-US') : '--'}} </v-list-item>
+                <v-list-item>Created: {{ (ev.created !== '--') ? formatCreateDate(ev.created) : '--'}} </v-list-item>
                 <v-list-item>Env: {{ev.environment}}</v-list-item>
                 <v-list-item>Spec: {{ev.in_spec}}</v-list-item>         
             </v-list>

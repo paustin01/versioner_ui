@@ -14,7 +14,8 @@ export default {
   left: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.75);
+  background: #8e8e8e;
+  opacity: 0.5;
   z-index: 10;
 }
 
@@ -25,17 +26,17 @@ export default {
   left: 15%;
   width: 80%;
   max-height: 80vh;
-  background: white;
+  background: #121212;
   border-radius: 5px;
   z-index: 100;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  overflow: scroll;
+  overflow-y: scroll;
   transition: all .3s ease;
 }
 
 .modal-header h3 {
   margin-top: 0;
-  border-bottom: 1px solid #00446A;
+  border-bottom: 1px solid #121212;
 }
 
 .modal-body {
@@ -44,16 +45,16 @@ export default {
 
 .modal-button {
   float: right;
-  background-color: #f9f9f9;
+  background-color: "#1e1e1e1";
   padding:5px;
   border-radius: 5px;
-   color:#00446A;
+  color:"#ffffff";
 
 }
 
 .modal-button:hover{
   color:#EF7724;
-  box-shadow: 0 1px 2px rgba(87, 87, 87, 0.33);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.33);
 }
 
 </style>

@@ -60,10 +60,7 @@ export default {
 
         }
     },
-
-
- 
-
+    
     created(){
         let saved_envs = locals.store.getjson('versions_selected_envs', []);
         this.selected_env = [...saved_envs].sort();
@@ -469,7 +466,7 @@ export default {
             <div class="row">
                 <div class="col margin-bottom-5px">
                 <h4 class="margin-top-5px">Environment Tags  </h4>
-                <div id="env_tags" class="vhight depth">
+                <div id="env_tags" class="vhight">
                 <button v-for="(env, idx) in envs" :key="idx" v-on:click="setEnv(idx, $event)" 
                     :id="`env-${env}`" :class="setEnvClass(env)">{{env}}</button>
                 </div>
@@ -551,7 +548,7 @@ export default {
             </div>
                 
                 <h4 class="margin-top-5px">Product Tags</h4>
-                <div id="product_tags" class="vhight depth">
+                <div id="product_tags" class="vhight">
                         <button v-for="(prod, idx) in products" :key="idx" 
                         :id="`prod-${prod}`"
                         v-on:click="setProduct(idx, $event)" 
@@ -573,7 +570,7 @@ export default {
 
         <input 
             id="search_product_ver" 
-            class="input pull-right depth v-card" 
+            class="input pull-right v-card" 
             v-model="search_version_keyword"
             v-on:keyup="searchProductsTable"
             name="search_product_ver"  
@@ -607,7 +604,7 @@ export default {
             placeholder="Group Name No Special Chars" class="fancy-input" />
             <br />
             <p>
-            <br /> <v-btn color="primary" v-on:click="createGroup">Save</v-btn>
+            <br /> <v-btn v-on:click="createGroup">Save</v-btn>
             </p>
 
   </Modal>

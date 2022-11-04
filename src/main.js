@@ -10,6 +10,8 @@ Vue.config.productionTip = false
 
 Vue.use(Vuetify);
 
+
+
 Vue.use(VueRouter);
 const router = new VueRouter({
   routes,

@@ -78,8 +78,8 @@
   <div class="">
     <strong>{{label}}:</strong>
     <input type="text" value="" style="width:100%;" placeholder="Search Release Tags" 
-    class="input depth v-card" v-on:keyup="searchItems" v-model="search_term" >
-  <div class="rel_box depth" >
+    class="input v-card" v-on:keyup="searchItems" v-model="search_term" >
+  <div class="rel_box" >
         
         <div v-for="(item, key) in release_tags" :key="key" class="rel_item">
            <em v-on:click="setValue" :name="item" :class="setClass(item)"  > {{ item }} </em>

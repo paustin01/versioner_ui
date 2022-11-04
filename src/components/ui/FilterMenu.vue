@@ -48,7 +48,7 @@
         <v-btn small v-on="on"> Filter Options </v-btn>
       </template>
 
-      <div class="pad-10px white">
+      <div class="pad-10px black">
         
         <v-switch v-model="show_rel" color="blue" 
         v-on:click="$emit('togglereltag', $event)"

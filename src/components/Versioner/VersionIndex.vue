@@ -131,6 +131,34 @@ export default{
             this.active_tab = tab_num;
         },
 
+        goToRundeck(jobstr){
+            const url = "https://rundeck.data-dev.clearcollateral.com/execution/show";
+            const job = jobstr.replace(/[^0-9]+/g, '');
+
+            const anchor = document.createElement('a');
+            anchor.href = `${url}/${job}`;
+            anchor.target="_blank";
+            anchor.click();
+
+        },
+
+
+        goToRepo(product){
+            const url = "https://bitbucket.org/clearcapital"
+            const anchor = document.createElement('a');
+            anchor.href = `${url}/${product}`;
+            anchor.target="_blank";
+            anchor.click();
+        },
+
+        goToPipelines(product, version){
+            const url = "https://bitbucket.org/clearcapital"; 
+            const anchor = document.createElement('a');
+            anchor.href = `${url}/${product}/pipelines/results/${version}`;
+            anchor.target="_blank";
+            anchor.click();
+        }
+
     }
 
 }
@@ -139,7 +167,8 @@ export default{
 
 <style scoped>
     .previous-table{
-        padding: 5px;
+        padding: 1px;
+        border: 1px solid rgb(12, 11, 11);
         margin:2px 2px 10px 2px;
         border-collapse:separate !important;
         width: 100%;
@@ -154,7 +183,7 @@ export default{
 </style>
 
 <template>
-<div data-app>
+<div data-app class="darkmode">
     <vue-internet-checker @status="status" @event="event" />
     
     <v-alert type="warning" v-if="error_msg"> {{error_msg}} <v-btn @click="refreshTable" small>Refresh App</v-btn>  </v-alert>
@@ -191,12 +220,15 @@ export default{
                         <Loader />
                     </div>
                     <div v-else>
-                        <h3 slot="header">Previous Deploys: <span class="previous-highlight">{{previous_selected_product}}</span></h3>
+                        <h3 slot="header">Previous Deploys: 
+                            <span @click="goToRepo(previous_selected_product)" class="previous-highlight cursor-pointer hover-effect">
+                                {{previous_selected_product}}
+                            </span>
+                        
+                        </h3>
 
                         <div v-for="(pv, key) in previous_versions" :key="key" >
-
-
-                            <table border="1" class="previous-table">
+                            <table width="100%" class="previous-table">
                                 <thead> 
                                 <tr>
                                     <th>Env</th>
@@ -212,13 +244,33 @@ export default{
                                 <tbody>
                                 <tr v-for="(v, k) in pv" :key="k">
                                     <td width="10%"> {{v.environment}} </td>
-                                    <td width="10%"> {{v.alias}} </td>
-                                    <td width="20%"> {{v.product}} </td>
-                                    <td width="10%"> {{v.product_version}} </td>
+                                    <td width="15%"> 
+                                        <span class="cursor-pointer hover-effect" @click="goToRundeck(v.alias)" v-if="v.alias.includes('rundeck_')">
+                                            {{v.alias}}
+                                        </span>
+                                        <span v-else>
+                                            {{v.alias}}
+                                        </span>
+                                        
+                                    </td>
+                                    <td width="20%"> 
+                                        <span @click="goToRepo(v.product)" class="cursor-pointer hover-effect">
+                                            {{v.product}}
+                                        </span> </td>
+                                    <td width="5%"> 
+                                        
+                                        <span @click="goToPipelines( v.product, v.product_version  )" class="cursor-pointer hover-effect">
+                                            {{v.product_version}}
+                                        </span>
+
+                                         </td>
                                     <td width="15%"> {{v.jira_release}} </td>
                                     <td width="15%"> {{v.deployer}} </td>
-                                    <td width="10%"> {{v.in_spec}} </td>
-                                    <td width="10%"> {{new Date(v.created).toLocaleDateString('en-US')}} </td>
+                                    <td width="5%"> {{v.in_spec}} </td>
+                                    <td width="15%"> 
+                                        {{new Date(v.created).toISOString().slice(0, 10)}} : 
+                                        {{new Date(v.created).toLocaleTimeString('en-US')}} 
+                                    </td>
                                 </tr>
                                 </tbody>
 
