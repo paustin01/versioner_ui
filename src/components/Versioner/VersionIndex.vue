@@ -168,7 +168,6 @@ export default{
 <style scoped>
     .previous-table{
         padding: 1px;
-        border: 1px solid rgb(12, 11, 11);
         margin:2px 2px 10px 2px;
         border-collapse:separate !important;
         width: 100%;
@@ -177,7 +176,7 @@ export default{
     }
 
     .previous-highlight{
-        color: #D9A43A;
+        color: #ffffff;
     }
 
 </style>
@@ -188,7 +187,7 @@ export default{
     
     <v-alert type="warning" v-if="error_msg"> {{error_msg}} <v-btn @click="refreshTable" small>Refresh App</v-btn>  </v-alert>
     <v-alert type="warning" v-if="!onLine"> No Internet Connection </v-alert>
-    <v-tabs v-model="active_tab" slider-color="#D9A43A" ripple >
+    <v-tabs v-model="active_tab" slider-color="#fff" right ripple >
     
       <v-tab v-for="(tab, idx) in tab_labels" :key="idx" v-on:click="setTab(idx)">{{ tab }}</v-tab>
       
@@ -228,7 +227,7 @@ export default{
                         </h3>
 
                         <div v-for="(pv, key) in previous_versions" :key="key" >
-                            <table width="100%" class="previous-table">
+                            <table width="100%" border="1" class="previous-table">
                                 <thead> 
                                 <tr>
                                     <th>Env</th>
