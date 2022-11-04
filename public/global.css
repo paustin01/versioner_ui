@@ -325,10 +325,13 @@ table { border-collapse: collapse; }
 
   .cursor-pointer{
     cursor: pointer;
+    padding: 1px;
   }
 
   .hover-effect:hover{
     background-color: #2b2a2a;
+    border-radius: 5px;
+    
   }
 
   .stricken {
