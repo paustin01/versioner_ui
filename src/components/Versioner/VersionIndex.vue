@@ -168,6 +168,7 @@ export default{
 <style scoped>
     .previous-table{
         padding: 1px;
+        border: 1px solid rgb(12, 11, 11);
         margin:2px 2px 10px 2px;
         border-collapse:separate !important;
         width: 100%;
