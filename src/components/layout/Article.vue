@@ -8,5 +8,5 @@ export default {
 <template>
     <article>
         <slot></slot>
-        </article>
+    </article>
 </template>

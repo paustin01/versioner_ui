@@ -6,7 +6,7 @@
         <v-btn small v-on="on"> Group Options </v-btn>
       </template>
 
-      <div class="pad-10px white">
+      <div class="pad-10px black">
 
                     <v-btn
                     v-on:click="$emit('showmodal', $event)" >Create Group</v-btn>  

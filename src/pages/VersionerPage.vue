@@ -14,9 +14,7 @@ components:{
 
 <template>
 <div>
-	<Meta title="Devops - Versioner" />
+	<Meta title="Versioner" />
 	<VersionIndex />
 </div>
 </template>
-
-
