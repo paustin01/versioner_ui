@@ -1,8 +1,6 @@
 <script>
 export default {
     name:"VersionBlock",
-    components:{
-    },
     props:{
             envs:{type:Array, default:()=>{return []}},
             envs_length:{type:Number, default:0},
@@ -19,6 +17,9 @@ export default {
 
   methods:{
         getWidth(){
+            if (this.envs_length == 0){
+                return 0;
+            }
             return Math.floor(100 / (this.envs_length + 1) );
         },
 
@@ -47,9 +48,13 @@ export default {
         },
 
         formatCreateDate(d){
-            const yymmdd = new Date(d).toISOString().slice(0, 10);
-            const hhmmss = new Date(d).toLocaleTimeString('en-US');
-            return `${yymmdd} : ${hhmmss}`;
+            try{
+                const yymmdd = new Date(d).toISOString().slice(0, 10);
+                const hhmmss = new Date(d).toLocaleTimeString('en-US');
+                return `${yymmdd} : ${hhmmss}`;
+            }catch(e){
+                return d;
+            }
         },
 
 
@@ -60,9 +65,20 @@ export default {
 
     computed:{
         sorted_envs(){
-            let envs = this.envs;
-            return envs.sort();
+          
+            if ( !this.envs) {
+                return [];
+            }
+
+            try{
+                let envs = this.envs;
+                return envs.sort();
+            }catch(e){
+                return [];
+            }
+
         }
+
     },
 
     created(){
@@ -83,7 +99,7 @@ export default {
 
 <template>
     <v-card class="margin-bottom-5px" style="padding:5px;">
-    <table width="100%" id="Version_Table">
+        <table width="100%" id="Version_Table">
         <thead>
             <tr>
                <th :style="`width:${getWidth()}%`"> Product</th>
@@ -91,7 +107,7 @@ export default {
             </th>     
         </tr>
         </thead>
-        <tbody>
+        <tbody v-if="selected_versions">
 
             <tr class="data_product" v-for="(envsprods, index) in selected_versions"  
                 :id="`product-${index}`" 

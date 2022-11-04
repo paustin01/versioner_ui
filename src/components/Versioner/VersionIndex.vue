@@ -89,7 +89,6 @@ export default{
                 let d = data.result.sort(ArrayHelpers.dynamicSort('environment'))
                 this.previous_versions = {}; 
                 d.map((v)=>{
-
                     let obj = this.previous_versions
                     let key = v.environment
                     let idx = Object.prototype.hasOwnProperty.call(obj, key);
@@ -157,6 +156,19 @@ export default{
             anchor.href = `${url}/${product}/pipelines/results/${version}`;
             anchor.target="_blank";
             anchor.click();
+        },
+
+        formatCratedDate(d){
+
+            try{
+              const yymmdd = new Date(d).toISOString().slice(0, 10);
+              const hhmmss = new Date(d).toLocaleTimeString('en-US');
+              return `${yymmdd} : ${hhmmss}`;
+            }catch(e){
+                console.log(e);
+              return d;
+            } 
+
         }
 
     }
@@ -168,7 +180,7 @@ export default{
 <style scoped>
     .previous-table{
         padding: 1px;
-        border: 1px solid rgb(12, 11, 11);
+        border: 1px solid rgb(110, 110, 110);
         margin:2px 2px 10px 2px;
         border-collapse:separate !important;
         width: 100%;
@@ -267,9 +279,8 @@ export default{
                                     <td width="15%"> {{v.jira_release}} </td>
                                     <td width="15%"> {{v.deployer}} </td>
                                     <td width="5%"> {{v.in_spec}} </td>
-                                    <td width="15%"> 
-                                        {{new Date(v.created).toISOString().slice(0, 10)}} : 
-                                        {{new Date(v.created).toLocaleTimeString('en-US')}} 
+                                    <td width="15%">
+                                        {{formatCratedDate(v.created)}}
                                     </td>
                                 </tr>
                                 </tbody>
