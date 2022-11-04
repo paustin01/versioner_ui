@@ -25,14 +25,15 @@
           { text: 'Release Tag', value: 'jira_release', sortable: true, },
           { text: 'Deployed By', value: 'deployer' },
           { text: 'Deployed From', value: 'caller' },
-          { text: 'Deployed On', value: 'created' }
+          { text: 'Deployed On', value: 'created', formatter: (d) => {
+            const yymmdd = new Date(d).toISOString().slice(0, 10);
+            const hhmmss = new Date(d).toLocaleTimeString('en-US');
+            return `${yymmdd} : ${hhmmss}`;
+          }
+        
+        }
         ],
         tdata: this.table_data,
-      }
-    },
-    methods:{
-      formatDate(d){
-        return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
       }
     }
   }
@@ -61,16 +62,11 @@
       :headers="headers"
       :items="tdata"
       :search="search">
-      <template v-slot:items="props">
-        <td class="">{{ props.item.environment }}</td>
-        <td class="">{{ props.item.product }}</td>
-        <td class="" >{{ props.item.product_version }}</td> 
-        <td class="" >{{ props.item.in_spec }}</td> 
-        <td class="" >{{ props.item.jira_release }}</td> 
-        <td class="">{{ props.item.deployer }}</td>
-        <td>{{ props.item.caller }}</td>
-        <td class="">{{ formatDate(new Date(props.item.created)) }}</td>
+
+      <template v-for="header in headers.filter(h=>h.hasOwnProperty('formatter'))" v-slot:[`item.${header.value}`]="{ header, value }">
+        {{ header.formatter(value) }}
       </template>
+
       <template v-slot:no-results>
         <v-alert :value="true" color="error" icon="mdi-warning">
           Your search for "{{ search }}" found no results.
