@@ -82,7 +82,7 @@ export default{
         previous_versions_for_product(product){
 
             this.previous_deploy_modal = true;
-            this.previous_selected_product = false;
+            this.previous_selected_product = "Loading...";
             this.error_msg = null;
             Api.previous_versions_for_product(product, 50).then(res => {
                 if (res.ok){return res.json();}
