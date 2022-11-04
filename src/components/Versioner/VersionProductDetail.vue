@@ -46,11 +46,15 @@
     </template>
 
     <template v-slot:item.alias="{ item }">
-        <span class="cursor-pointer hover-effect" 
-        @click="goToRundeck(item.alias)">{{ item.alias }}</span>     
+
+        
+        <span v-if="item.alias.includes('rundeck')" class="cursor-pointer hover-effect" 
+        @click="goToRundeck(item.alias)">{{ item.alias }}
+        </span>
+        <span v-else>
+            {{ item.alias }}
+        </span>   
     </template>
-
-
 
     <template v-slot:item.in_spec="{ item }">
         <span v-if="item.in_spec === 'done' || item.in_spec === 'success'">
