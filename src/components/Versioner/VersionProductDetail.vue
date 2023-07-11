@@ -127,19 +127,19 @@ export default {
             anchor.click();
         },
         goToRundeck(jobstr){
-            const url = "https://rundeck.data-dev.clearcollateral.com/execution/show";
+            const url = "https://rundeck.mgmt.pluscoproduct.com/execution/show";
             const job = jobstr.replace(/[^0-9]+/g, '');
             this.openWindow(`${url}/${job}`);
         },
 
         goToRepo(product){
-            const url = "https://bitbucket.org/clearcapital"
+            const url = "https://github.com/plusco-product/"
             this.openWindow(`${url}/${product}`);
         },
 
         goToPipelines(product, version){
-            const url = "https://bitbucket.org/clearcapital"; 
-            this.openWindow(`${url}/${product}/pipelines/results/${version}`);            
+            const url = "https://github.com/plusco-product/"; 
+            this.openWindow(`${url}/${product}/actions/runs/${version}`);            
         },
 
         formatCreateDate(d){

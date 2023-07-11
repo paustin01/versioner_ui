@@ -8,7 +8,6 @@ node_modules/
 dist/
 
 # Local env testing
-.env.development.local
 .env.local
 
 # Compiled Java class files
