@@ -32,7 +32,7 @@ export default {
         },
 
         goToRepo(product){
-            const url = " https://github.com/plusco-product/"
+            const url = " https://github.com/plusco-product"
             const anchor = document.createElement('a');
             anchor.href = `${url}/${product}`;
             anchor.target="_blank";
@@ -40,9 +40,9 @@ export default {
         },
 
         goToPipelines(product, version){
-            const url = "https://github.com/plusco-product/"; 
+            const url = "https://github.com/plusco-product";
             const anchor = document.createElement('a');
-            anchor.href = `${url}/${product}/pipelines/results/${version}`;
+            anchor.href = `${url}/${product}/commits/${version}`;
             anchor.target="_blank";
             anchor.click();
         },

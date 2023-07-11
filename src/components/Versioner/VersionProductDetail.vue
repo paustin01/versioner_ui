@@ -133,13 +133,13 @@ export default {
         },
 
         goToRepo(product){
-            const url = "https://github.com/plusco-product/"
+            const url = "https://github.com/plusco-product"
             this.openWindow(`${url}/${product}`);
         },
 
         goToPipelines(product, version){
-            const url = "https://github.com/plusco-product/"; 
-            this.openWindow(`${url}/${product}/actions/runs/${version}`);            
+            const url = "https://github.com/plusco-product";
+            this.openWindow(`${url}/${product}/commits/${version}`);
         },
 
         formatCreateDate(d){
