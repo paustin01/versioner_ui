@@ -32,7 +32,7 @@ export default {
         },
 
         goToRepo(product){
-            const url = " https://bitbucket.org/clearcapital"
+            const url = " https://github.com/plusco-product/"
             const anchor = document.createElement('a');
             anchor.href = `${url}/${product}`;
             anchor.target="_blank";
@@ -40,7 +40,7 @@ export default {
         },
 
         goToPipelines(product, version){
-            const url = "https://bitbucket.org/clearcapital"; 
+            const url = "https://github.com/plusco-product/"; 
             const anchor = document.createElement('a');
             anchor.href = `${url}/${product}/pipelines/results/${version}`;
             anchor.target="_blank";
@@ -94,6 +94,12 @@ export default {
     table td { padding:2px;}
     .gray{color:"#333";
     opacity: 0.5;
+    }
+</style>
+
+<style scoped>
+    .version-text {
+        margin-left: 5px;
     }
 </style>
 
@@ -172,13 +178,13 @@ export default {
                    
             </template>
             <v-list small>
-                <v-list-item>Version: {{ev.product_version}}</v-list-item>
-                <v-list-item>Alias: {{ev.alias}}</v-list-item>
-                <v-list-item>Release: {{ev.jira_release}}</v-list-item>
-                <v-list-item>Deployer: {{ev.deployer}}  </v-list-item>
-                <v-list-item>Created: {{ (ev.created !== '--') ? formatCreateDate(ev.created) : '--'}} </v-list-item>
-                <v-list-item>Env: {{ev.environment}}</v-list-item>
-                <v-list-item>Spec: {{ev.in_spec}}</v-list-item>         
+                <v-list-item><strong>Version:</strong><span class="version-text">{{ ev.product_version}}</span></v-list-item>
+                <v-list-item><strong>Alias:</strong><span class="version-text">{{ev.alias}}</span></v-list-item>
+                <v-list-item><strong>Release:</strong><span class="version-text">{{ev.jira_release}}</span></v-list-item>
+                <v-list-item><strong>Deployer:</strong><span class="version-text">{{ev.deployer}}</span></v-list-item>
+                <v-list-item><strong>Created:</strong><span class="version-text">{{ (ev.created !== '--') ? formatCreateDate(ev.created) : '--'}}</span></v-list-item>
+                <v-list-item><strong>Env:</strong><span class="version-text">{{ev.environment}}</span></v-list-item>
+                <v-list-item><strong>Spec:</strong><span class="version-text">{{ev.in_spec}}</span></v-list-item>       
             </v-list>
             </v-tooltip>   
                     

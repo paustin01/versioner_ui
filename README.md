@@ -7,15 +7,13 @@ npm install
 
 ## Env Vars Setup
 ```
-# copy the example 
-cp ./.env.example ./.env.development.local
-
-# update the api key value
-vim ./.env.development.local
+# Copy the example .env file and update the API key and other values
+cp .env .env.local
 ```
 
 ### Compiles and hot-reloads for development
 ```
+export NODE_OPTIONS=--openssl-legacy-provider 
 npm run serve
 ```
 

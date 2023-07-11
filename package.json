@@ -67,14 +67,6 @@
     "not dead"
   ],
   "_id": "versioner_ui@1.0.0",
-  "bugs": {
-    "url": "https://bitbucket.org/goodcarrot/versioner_ui/issues"
-  },
-  "homepage": "https://bitbucket.org/goodcarrot/versioner_ui#readme",
   "license": "ISC",
-  "readme": "ERROR: No README data found!",
-  "repository": {
-    "type": "git",
-    "url": "git+https://scottdean@bitbucket.org/goodcarrot/versioner_ui.git"
-  }
+  "readme": "ERROR: No README data found!"
 }
